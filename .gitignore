@@ -1,0 +1,10 @@
+.DS_Store
+*.xcuserstate
+xcuserdata/
+DerivedData/
+*.xcworkspace/xcuserdata/
+.swiftpm/
+*.moved-aside
+*.pbxuser
+*.perspectivev3
+.git_locks_to_delete/

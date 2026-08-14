@@ -1,0 +1,150 @@
+meta:
+  name: RandomNote Design System
+  version: 1.0.0
+  platform: iOS 26+ / SwiftUI / WidgetKit
+  reference:
+    title: University Website UI Design for Mobile App Landing Page
+    author: Phenomenon Studio
+    url: https://dribbble.com/shots/23405051-University-Website-UI-Design-for-Mobile-App-Landing-Page
+    caveat: >-
+      色・比率は参考ショットを目視で読み取った近似値。ピクセル抽出ではないため、
+      参考元の正確な値ではなく「この方向性を再現するための独自トークン」として扱う。
+  implementation: Shared/DesignSystem.swift（このYAMLが正、Swiftは写し）
+
+# 参考ショットから抽出した設計思想。個別のトークンより優先する。
+principles:
+  - id: one-hero
+    name: 一画面に主役はひとつ
+    detail: 主役（メモカード）以外は徹底的に静かにする。装飾で competing させない。
+  - id: planes-not-shadows
+    name: 影ではなく面と余白で階層を作る
+    detail: 濃い影は使わない。面の色差・ヘアライン境界・余白で奥行きを出す。
+  - id: tight-display-loose-body
+    name: 見出しは詰める、本文は緩める
+    detail: 見出しはトラッキングを負に詰めて塊にする。本文は行間を広げて読ませる。
+  - id: micro-labels
+    name: メタ情報は極小の大文字ラベル
+    detail: 日付や件数は小さく・大文字・トラッキング広めにして、主役と競合させない。
+  - id: two-shapes-only
+    name: 丸みは2種類だけ
+    detail: 操作要素は完全なピル、面は大きな角丸。中途半端な角丸を混ぜない。
+  - id: single-accent
+    name: 色は1色だけ効かせる
+    detail: ブルーは操作要素と強調に限定。それ以外は無彩色で構成する。
+
+color:
+  light:
+    canvas: "#F1F2F6"          # 画面背景
+    surface: "#FFFFFF"         # カード・行の面
+    surface_sunken: "#E9EBF1"  # 入力欄など一段沈む面
+    ink: "#0F1222"             # 主テキスト
+    ink_secondary: "#5A6076"   # 補助テキスト
+    ink_tertiary: "#8B90A3"    # マイクロラベル
+    border: "#E3E5EE"          # ヘアライン境界
+    brand: "#1E3AC4"           # ロイヤルブルー（大きな面・強い強調）
+    accent: "#3D6EF7"          # 操作要素
+    accent_pressed: "#2F58D4"
+    on_accent: "#FFFFFF"
+    highlight: "#F5A623"       # 星・注意喚起
+    danger: "#E5484D"
+  dark:
+    canvas: "#0B0D14"
+    surface: "#161925"
+    surface_sunken: "#101320"
+    ink: "#F2F3F7"
+    ink_secondary: "#A2A8BC"
+    ink_tertiary: "#6E748A"
+    border: "#252938"
+    brand: "#2E4FE0"
+    accent: "#6C90FF"
+    accent_pressed: "#547BF5"
+    on_accent: "#FFFFFF"
+    highlight: "#F7B955"
+    danger: "#FF6369"
+
+typography:
+  family:
+    note: >-
+      参考はジオメトリックグロテスク。iOSでは SF Pro（.default）で代替し、
+      ウェイトとトラッキングで質感を寄せる。丸ゴシック（.rounded）は使わない。
+  # Dynamic Type を殺さないため、固定ptではなく semantic text style に寄せる
+  styles:
+    display:  { text_style: largeTitle, weight: bold,     tracking: -0.8 }
+    title:    { text_style: title2,     weight: semibold, tracking: -0.5 }
+    headline: { text_style: headline,   weight: semibold, tracking: -0.2 }
+    body:     { text_style: body,       weight: regular,  line_spacing: 5 }
+    callout:  { text_style: callout,    weight: regular }
+    label:    { text_style: caption2,   weight: semibold, tracking: 1.2, transform: uppercase }
+    caption:  { text_style: caption,    weight: regular }
+    mono:     { text_style: footnote,   design: monospaced }
+
+spacing:
+  base: 4
+  scale: { xs: 4, sm: 8, md: 12, lg: 16, xl: 20, xxl: 24, xxxl: 32, huge: 40 }
+  screen_margin: 20
+  card_padding: 20
+  stack_gap: 16
+
+radius:
+  pill: 999      # ボタン・チップ
+  card: 24       # カード・大きな面
+  control: 16    # 入力欄・小さな面
+  media: 14
+
+border:
+  hairline: 1
+
+elevation:
+  note: 影は「浮かせる」ためではなく、面の輪郭を補助するためだけに使う
+  card:   { y: 2, blur: 12, opacity: 0.05 }
+  raised: { y: 8, blur: 24, opacity: 0.10 }
+
+motion:
+  quick: 0.18
+  standard: 0.30   # 既定。SwiftUI では .smooth(duration:)
+  emphasis: 0.45
+
+components:
+  button_primary:
+    shape: pill
+    background: accent
+    foreground: on_accent
+    typography: headline
+    padding_vertical: 15
+    full_width: true
+  button_secondary:
+    shape: pill
+    background: surface
+    border: hairline / border
+    foreground: ink
+  card:
+    background: surface
+    radius: card
+    padding: card_padding
+    border: hairline / border
+    elevation: card
+  list_row:
+    background: surface
+    padding_vertical: md
+    separator: hairline / border（インセット）
+  micro_label:
+    typography: label
+    color: ink_tertiary
+  chip:
+    shape: pill
+    height: 32          # compact: 24（カード内のカテゴリ表示など従属的な場面）
+    typography: footnote semibold（compactは caption2 semibold）
+    selected: { background: accent, foreground: on_accent }
+    unselected: { background: surface, border: hairline / border, foreground: ink_secondary }
+    usage: カテゴリの表示と絞り込み。一覧上部の横スクロールフィルタ列、エディタの候補、カード内のラベル。
+  widget:
+    background: canvas 相当（containerBackground）
+    title: headline / ink
+    body: caption〜footnote / ink_secondary
+    meta: micro_label
+
+accessibility:
+  - Dynamic Type を殺さない（固定ptのフォント指定を新規に足さない）
+  - 本文とその背景のコントラスト比は 4.5:1 以上を維持する
+  - 色だけで状態を伝えない（選択状態はウェイトや形でも示す）
+  - ライト／ダーク両方で必ず確認する
