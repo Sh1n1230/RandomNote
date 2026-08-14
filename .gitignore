@@ -8,3 +8,5 @@ DerivedData/
 *.pbxuser
 *.perspectivev3
 .git_locks_to_delete/
+.git_lock_bak*
+.git_locks_to_delete_tmp
